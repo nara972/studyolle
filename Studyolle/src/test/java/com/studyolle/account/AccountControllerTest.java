@@ -10,11 +10,12 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.studyolle.domain.Account;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -64,7 +65,9 @@ public class AccountControllerTest {
 			   .andExpect(view().name("redirect:/"))
 			   .andExpect(unauthenticated());
 		
-		assertTrue(accountRepository.existsByEmail("email@naver.com"));
+		Account account=accountRepository.findByEmail("email@naver.com");
+		assertNotNull(account);
+		assertNotEquals(account.getPassword(), "12345678");
 		then(javaMailSender).should().send(any(SimpleMailMessage.class));
 	}
 	
