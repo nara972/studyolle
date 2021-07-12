@@ -5,10 +5,14 @@ import javax.validation.Valid;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.studyolle.domain.Account;
+import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,12 +23,14 @@ public class AccountService {
 	private final AccountRepository accountRepository;
 	private final JavaMailSender javaMailSender;
 	private final PasswordEncoder passwordEncoder;
+	//private final AuthenticationManager authenticationManager;
 	
 	@Transactional
-	public void processNewAccount(SignUpForm signUpForm) {
+	public Account processNewAccount(SignUpForm signUpForm) {
 		Account newAccount=saveNewAccount(signUpForm);
 		newAccount.generateEmailCheckToken();
 		sendSignUpConfirmEmail(newAccount);
+		return newAccount;
 	}
 	
 	private Account saveNewAccount(@Valid SignUpForm signUpForm) {
@@ -48,6 +54,21 @@ public class AccountService {
 		mailMessage.setText("/check-email-token?token="+newAccount.getEmailCheckToken()+
 				"&email="+newAccount.getEmail());
 		javaMailSender.send(mailMessage);
+	}
+
+	public void login(Account account) {
+		UsernamePasswordAuthenticationToken token=new UsernamePasswordAuthenticationToken(
+				account.getNickname(),
+				account.getPassword(),
+				List.of(new SimpleGrantedAuthority("ROLE_USER")));
+		SecurityContextHolder.getContext().setAuthentication(token);
+		
+		//UsernamePasswordAuthenticationToken token=new UsernamePasswordAuthenticationToken(
+		//		username, password);
+		//Authentication authentication=authenticationManager.authenticate(token);
+		//SecurityContext context=SecurityContextHolder.getContext();
+		//context.setAuthentication(token);
+		
 	}
 	
 

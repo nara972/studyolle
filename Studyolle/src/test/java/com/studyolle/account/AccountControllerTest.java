@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import org.apache.tomcat.jni.Status;
 
 @Transactional
 @SpringBootTest
@@ -63,7 +63,8 @@ public class AccountControllerTest {
                 .andExpect(model().attributeDoesNotExist("error"))
                 .andExpect(model().attributeExists("nickname"))
                 .andExpect(model().attributeExists("numberOfUser"))
-                .andExpect(view().name("account/checked-email"));
+                .andExpect(view().name("account/checked-email"))
+                .andExpect(authenticated().withUsername("keesun"));
     }
 	
 	@DisplayName("회원 가입 화면 보이는지 테스트")
@@ -73,14 +74,15 @@ public class AccountControllerTest {
 		       .andDo(print())
 		       .andExpect(status().isOk())
 			   .andExpect(view().name("account/sign-up"))
-			   .andExpect(model().attributeExists("signUpForm"));
+			   .andExpect(model().attributeExists("signUpForm"))
+			   .andExpect(unauthenticated());
 	}
 
 	@DisplayName("회원 가입 처리 - 입력값 오류")
 	@Test
 	void signUpSubmit_with_wrong_input() throws Exception {
 		mockMvc.perform(post("/sign-up")
-			   .param("nickname", "narra")
+			   .param("nickname", "keesun")
 			   .param("email", "email..")
 			   .param("password", "12345")
 			   .with(csrf()))
@@ -93,13 +95,13 @@ public class AccountControllerTest {
 	@Test
 	void signUpSubmit_with_correct_input() throws Exception {
 		mockMvc.perform(post("/sign-up")
-			   .param("nickname", "narra")
+			   .param("nickname", "keesun")
 			   .param("email", "email@naver.com")
 			   .param("password", "12345678")
 			   .with(csrf()))
 		       .andExpect(status().is3xxRedirection())
 			   .andExpect(view().name("redirect:/"))
-			   .andExpect(unauthenticated());
+			   .andExpect(authenticated().withUsername("keesun"));
 		
 		Account account=accountRepository.findByEmail("email@naver.com");
 		assertNotNull(account);
