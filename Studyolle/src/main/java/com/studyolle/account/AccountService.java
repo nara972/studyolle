@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService {
+public class AccountService  {
 	
 	private final AccountRepository accountRepository;
 	private final JavaMailSender javaMailSender;
@@ -47,7 +48,7 @@ public class AccountService {
 		
 	}
 	
-	private void sendSignUpConfirmEmail(Account newAccount) {
+	public void sendSignUpConfirmEmail(Account newAccount) {
 		SimpleMailMessage mailMessage=new SimpleMailMessage();
 		mailMessage.setTo(newAccount.getEmail());
 		mailMessage.setSubject("스터디올래, 회원 가입 인증");
