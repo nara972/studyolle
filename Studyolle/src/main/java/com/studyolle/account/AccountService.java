@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.studyolle.domain.Account;
+import com.studyolle.settings.Profile;
+
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
@@ -90,6 +92,14 @@ public class AccountService implements UserDetailsService  {
 	public void completeSignUp(Account account) {
 		account.completeSignUp();
 		login(account);		
+	}
+
+	public void updateProfile(Account account, @Valid Profile profile) {
+		account.setUrl(profile.getUrl());
+		account.setOccupation(profile.getOccupation());
+		account.setLocation(profile.getLocation());
+		account.setBio(profile.getBio());
+		accountRepository.save(account);
 	}
 	
 

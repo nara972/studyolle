@@ -3,8 +3,10 @@ package com.studyolle.settings;
 import com.studyolle.domain.Account;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class Profile {
 	
 	public Profile(Account account) {
