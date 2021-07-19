@@ -68,6 +68,7 @@ public class SettingsController {
 			return SETTINGS_PASSWORD_VIEW_NAME;
 		}
 		accountService.updatePassword(account,passwordForm.getNewPassword());
+		attributes.addFlashAttribute("message","프로필을 수정했습니다.");
 		return "redirect:"+SETTINGS_PASSWORD_URL;
 		
 	}
