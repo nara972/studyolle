@@ -11,13 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Profile {
 	
-	public Profile(Account account) {
-		this.bio=account.getBio();
-		this.url=account.getUrl();
-		this.occupation=account.getOccupation();
-		this.location=account.getLocation();
-		this.profileImage=account.getProfileImage();
-	}
+	
 
 	@Length(max=35)
 	private String bio;
