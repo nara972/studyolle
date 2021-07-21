@@ -11,9 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.studyolle.account.AccountRepository;
-import com.studyolle.account.AccountService;
-import com.studyolle.account.SignUpForm;
+import com.studyolle.account.form.SignUpForm;
+import com.studyolle.account.validator.AccountRepository;
+import com.studyolle.account.validator.AccountService;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;

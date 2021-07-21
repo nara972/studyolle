@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.studyolle.account.AccountRepository;
+import com.studyolle.account.validator.AccountRepository;
 import com.studyolle.domain.Account;
 import com.studyolle.settings.form.NicknameForm;
 

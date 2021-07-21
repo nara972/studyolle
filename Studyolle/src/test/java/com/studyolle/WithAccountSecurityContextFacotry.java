@@ -8,8 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 
-import com.studyolle.account.AccountService;
-import com.studyolle.account.SignUpForm;
+import com.studyolle.account.form.SignUpForm;
+import com.studyolle.account.validator.AccountService;
 
 @RequiredArgsConstructor
 public class WithAccountSecurityContextFacotry implements WithSecurityContextFactory<WithAccount> {

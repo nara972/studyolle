@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.studyolle.account.CurrentUser;
+import com.studyolle.account.validator.CurrentUser;
 import com.studyolle.domain.Account;
 
 @Controller

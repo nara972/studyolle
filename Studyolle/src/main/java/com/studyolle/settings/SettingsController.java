@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.studyolle.account.AccountService;
-import com.studyolle.account.CurrentUser;
+import com.studyolle.account.validator.AccountService;
+import com.studyolle.account.validator.CurrentUser;
 import com.studyolle.domain.Account;
 import com.studyolle.settings.form.NicknameForm;
 import com.studyolle.settings.form.Notifications;

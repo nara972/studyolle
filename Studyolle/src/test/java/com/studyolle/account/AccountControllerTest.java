@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.studyolle.account.validator.AccountRepository;
 import com.studyolle.domain.Account;
 
 import static org.junit.jupiter.api.Assertions.*;

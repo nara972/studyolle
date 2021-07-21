@@ -1,7 +1,7 @@
 package com.studyolle.settings;
 import com.studyolle.WithAccount;
-import com.studyolle.account.AccountRepository;
-import com.studyolle.account.AccountService;
+import com.studyolle.account.validator.AccountRepository;
+import com.studyolle.account.validator.AccountService;
 import com.studyolle.domain.Account;
 
 import org.junit.jupiter.api.AfterEach;

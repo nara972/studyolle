@@ -1,4 +1,4 @@
-package com.studyolle.account;
+package com.studyolle.account.validator;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

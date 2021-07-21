@@ -1,4 +1,4 @@
-package com.studyolle.account;
+package com.studyolle.account.validator;
 
 import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.studyolle.account.form.SignUpForm;
 import com.studyolle.domain.Account;
 import com.studyolle.settings.form.Notifications;
 import com.studyolle.settings.form.Profile;
@@ -119,6 +120,17 @@ public class AccountService implements UserDetailsService  {
         // login메소드를 추가해주는 이유는 navigation에서 dropdown에서의 nickname이 바뀌도록 해주기 위함이다.
         login(account);
     }
+
+	public void sendLoginLink(Account account) {
+		account.generateEmailCheckToken();
+		SimpleMailMessage mailMessage=new SimpleMailMessage();
+		mailMessage.setTo(account.getEmail());
+		mailMessage.setSubject("스터디 올래, 로그인 링크");
+		mailMessage.setText("/login-by-email?token="+account.getEmailCheckToken()+
+				 "&email="+account.getEmail());
+		javaMailSender.send(mailMessage);
+		
+	}
 	
 
 }

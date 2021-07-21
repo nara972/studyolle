@@ -1,4 +1,4 @@
-package com.studyolle.account;
+package com.studyolle.account.form;
 
 
 import javax.validation.constraints.Email;
