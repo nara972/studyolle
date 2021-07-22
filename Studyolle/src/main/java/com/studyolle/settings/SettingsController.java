@@ -28,16 +28,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SettingsController {
 	
-	@InitBinder("passwordForm")
-	public void passwordForminitBinder(WebDataBinder webDataBinder) {
-		webDataBinder.addValidators(new PasswordFormValidator());
-	}
-	
-	@InitBinder("nicknameForm")
-	public void nicknameForminitBinder(WebDataBinder webDataBinder) {
-		webDataBinder.addValidators(nicknameFormValidator);
-	}
-	
 	static final String SETTINGS_PROFILE_VIEW_NAME="settings/profile";
 	static final String SETTINGS_PROFILE_URL="/settings/profile";
 	
@@ -49,6 +39,19 @@ public class SettingsController {
 	
 	static final String SETTINGS_ACCOUNT_VIEW_NAME="settings/account";
 	static final String SETTINGS_ACCOUNT_URL="/settings/account";
+	
+	static final String SETTINGS_TAGS_VIEW_NAME="settings/tags";
+	static final String SETTINGS_TAGS_URL="/settings/tags";
+	
+	@InitBinder("passwordForm")
+	public void passwordForminitBinder(WebDataBinder webDataBinder) {
+		webDataBinder.addValidators(new PasswordFormValidator());
+	}
+	
+	@InitBinder("nicknameForm")
+	public void nicknameForminitBinder(WebDataBinder webDataBinder) {
+		webDataBinder.addValidators(nicknameFormValidator);
+	}
 	
 	private final AccountService accountService;
 	private final ModelMapper modelMapper;
@@ -132,6 +135,11 @@ public class SettingsController {
 			return "redirect:"+SETTINGS_ACCOUNT_URL;
 			
 		}
-	           
+	   
+		@GetMapping(SETTINGS_TAGS_URL)
+		public String updateTags(@CurrentUser Account account,Model model) {
+			model.addAttribute(account);
+			return SETTINGS_TAGS_VIEW_NAME;
+		}
 
 }
