@@ -23,6 +23,7 @@ import com.studyolle.settings.form.Profile;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import lombok.RequiredArgsConstructor;
 
@@ -139,5 +140,10 @@ public class AccountService implements UserDetailsService  {
 	     Optional<Account> byId = accountRepository.findById(account.getId());
 	     byId.ifPresent(a -> a.getTags().add(tag));
 	    }
+	
+	public Set<Tag> getTags(Account account){
+		Optional<Account> byId=accountRepository.findById(account.getId());
+		return byId.orElseThrow().getTags();
+	}
 	
 }
