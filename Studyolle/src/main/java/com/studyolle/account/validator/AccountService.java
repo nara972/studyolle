@@ -17,10 +17,12 @@ import org.springframework.stereotype.Service;
 
 import com.studyolle.account.form.SignUpForm;
 import com.studyolle.domain.Account;
+import com.studyolle.domain.Tag;
 import com.studyolle.settings.form.Notifications;
 import com.studyolle.settings.form.Profile;
 
 import java.util.List;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -131,6 +133,11 @@ public class AccountService implements UserDetailsService  {
 		javaMailSender.send(mailMessage);
 		
 	}
-	
 
+	// account엔티티는 Detached 상태 이기때문에 account를 먼저 읽어 온다
+	public void addTag(Account account, Tag tag) {
+	     Optional<Account> byId = accountRepository.findById(account.getId());
+	     byId.ifPresent(a -> a.getTags().add(tag));
+	    }
+	
 }
