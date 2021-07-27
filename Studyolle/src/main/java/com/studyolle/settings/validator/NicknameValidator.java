@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
-public class NicknameFormValidator implements Validator {
+public class NicknameValidator implements Validator {
     
     private final AccountRepository accountRepository;
     
