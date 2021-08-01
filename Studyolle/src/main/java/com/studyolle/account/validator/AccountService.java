@@ -1,6 +1,9 @@
 package com.studyolle.account.validator;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -16,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.studyolle.account.form.SignUpForm;
+import com.studyolle.config.AppProperties;
 import com.studyolle.domain.Account;
 import com.studyolle.domain.Tag;
 import com.studyolle.domain.Zone;
@@ -41,7 +45,9 @@ public class AccountService implements UserDetailsService {
 	private final EmailService emailService;
 	private final PasswordEncoder passwordEncoder;
 	private final ModelMapper modelMapper;
-	// private final AuthenticationManager authenticationManager;
+	private final TemplateEngine templateEngine;
+	private final AppProperties appProperties;
+	
 
 	public Account processNewAccount(SignUpForm signUpForm) {
 		Account newAccount = saveNewAccount(signUpForm);
@@ -57,11 +63,21 @@ public class AccountService implements UserDetailsService {
 	}
 
 	public void sendSignUpConfirmEmail(Account newAccount) {
+		Context context = new Context();
+        context.setVariable("link", "/check-email-token?token=" +
+                newAccount.getEmailCheckToken() + "&email=" + newAccount.getEmail());
+        context.setVariable("nickname", newAccount.getNickname());
+        context.setVariable("linkName", "이메일 인증하기");
+        context.setVariable("message", "스터디올래 서비스를 사용하려면 링크를 클릭하세요.");
+        context.setVariable("host", appProperties.getHost());
+
+        // mail/simple-link.html을 String타입으로 생성
+        String message = templateEngine.process("mail/simple-link", context);
+		
 		EmailMessage emailMessage = EmailMessage.builder()
 				.to(newAccount.getEmail())
 				.subject("스터디올래, 회원 가입 성공")
-				.message("/check-email-token?token=" + newAccount.getEmailCheckToken() + 
-						"&email=" + newAccount.getEmail())
+				.message(message)
 				.build();
 		
 		emailService.sendEmail(emailMessage);
@@ -123,14 +139,22 @@ public class AccountService implements UserDetailsService {
 	}
 
 	public void sendLoginLink(Account account) {
+		Context context = new Context();
+        context.setVariable("link", "/check-email-token?token=" +
+        		account.getEmailCheckToken() + "&email=" + account.getEmail());
+        context.setVariable("nickname", account.getNickname());
+        context.setVariable("linkName", "이메일로 로그인하기");
+        context.setVariable("message", "로그인 하려면 아래 링크를 클릭하세요");
+        context.setVariable("host", appProperties.getHost());
+
+        String message = templateEngine.process("mail/simple-link", context);
+		
 		EmailMessage emailMessage = EmailMessage.builder()
 				.to(account.getEmail())
-				.subject("스터디올래, 회원 가입 성공")
-				.message("/check-email-token?token=" + account.getEmailCheckToken() + 
-						"&email=" + account.getEmail())
+				.subject("스터디올래, 로그인 링크")
+				.message(message)
 				.build();
 		emailService.sendEmail(emailMessage);
-
 	}
 
 	// account엔티티는 Detached 상태 이기때문에 account를 먼저 읽어 온다
